@@ -54,6 +54,7 @@ func (api SpotifyApi) SearchForTrack(request SearchTrackRequest) (*Track, error)
 	normalizedTrack := &Track{
 		ID:      TrackId(track.ID),
 		URI:     Uri(track.URI),
+		Link:    "https://open.spotify.com/track/" + string(track.ID),
 		Title:   track.Name,
 		Album:   track.Album.Name,
 		Artists: extractArtistNames(track.Artists),
