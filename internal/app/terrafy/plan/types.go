@@ -21,13 +21,23 @@ type PlaylistTrackDefinition struct {
 }
 
 var spotifyLinkPattern *regexp.Regexp = regexp.MustCompile(`^https?://open\.spotify\.com/track/(?P<trackId>[a-zA-Z0-9]{22})(?:\?.*)?$`)
+var trackIdIndex = util.MustFindFirstIndex(spotifyLinkPattern.SubexpNames(), "trackID")
 
-func (ptd *PlaylistTrackDefinition) HasSpotifyLink() bool {
+func (ptd *PlaylistTrackDefinition) ValidLink() bool {
 	if util.IsBlank(ptd.Link) {
 		return false
 	}
 
 	return spotifyLinkPattern.MatchString(ptd.Link)
+}
+
+func (ptd *PlaylistTrackDefinition) TrackId() string {
+	submatch := spotifyLinkPattern.FindStringSubmatch(ptd.Link)
+	if trackIdIndex < len(submatch) {
+		return submatch[trackIdIndex]
+	}
+
+	return ""
 }
 
 // func (ptd *PlaylistTrackDefinition) HasSearchMetadata() bool {

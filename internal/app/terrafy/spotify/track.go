@@ -41,7 +41,7 @@ func (api SpotifyApi) SearchForTrack(request SearchTrackRequest) (*Track, error)
 		spotifylib.Limit(1))
 
 	if err != nil {
-		log.Printf("Search for track with query '%s' failed\n%w", query, err)
+		log.Printf("Search for track with query '%s' failed\n%s", query, err)
 		return nil, errors.New("spotify search API error")
 	}
 
@@ -74,7 +74,7 @@ func buildSearchQuery(request SearchTrackRequest) string {
 	searchParams := make([]string, 0)
 
 	if !util.IsBlank(request.Title) {
-		searchParams = append(searchParams, `track:"`+request.Title+`"`)
+		searchParams = append(searchParams, `"`+request.Title+`"`)
 	}
 
 	for _, artist := range request.Artists {
